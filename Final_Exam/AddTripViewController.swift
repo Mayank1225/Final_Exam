@@ -15,8 +15,14 @@ class AddTripViewController: UIViewController, UITableViewDataSource, UITableVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        startDate.date = Date()
-        endDate.date = Date()
+        
+        let today = Date()
+        startDate.minimumDate = today
+        endDate.minimumDate = today
+        
+        startDate.date = today
+        endDate.date = today
+        
         todoTable.dataSource = self
         todoTable.delegate = self
     }
@@ -26,7 +32,16 @@ class AddTripViewController: UIViewController, UITableViewDataSource, UITableVie
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
             if message == "Trip saved successfully!" {
                 self.navigationController?.popViewController(animated: true)
-                
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func showAlertSuccess(message: String) {
+        let alert = UIAlertController(title: message, message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            if message == "Trip saved successfully!" {
+                self.navigationController?.popViewController(animated: true)
             }
         }))
         self.present(alert, animated: true, completion: nil)
@@ -35,32 +50,31 @@ class AddTripViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBAction func OnSave(_ sender: Any) {
         var errorMessage = ""
 
-                if let tripName = TripName.text, tripName.isEmpty {
-                    errorMessage += "Please enter the trip name.\n"
-                }
+        if let tripName = TripName.text, tripName.isEmpty {
+            errorMessage += "Please enter the trip name.\n"
+        }
 
-                if let startLocation = startLocation.text, startLocation.isEmpty {
-                    errorMessage += "Please enter the start location.\n"
-                }
+        if let startLocation = startLocation.text, startLocation.isEmpty {
+            errorMessage += "Please enter the start location.\n"
+        }
 
-                if let endLocation = endLocation.text, endLocation.isEmpty {
-                    errorMessage += "Please enter the end location.\n"
-                }
+        if let endLocation = endLocation.text, endLocation.isEmpty {
+            errorMessage += "Please enter the end location.\n"
+        }
 
-                if !errorMessage.isEmpty {
-                    showAlert(message: errorMessage.trimmingCharacters(in: .whitespacesAndNewlines))
-                    return
-                }
+        if !errorMessage.isEmpty {
+            showAlert(message: errorMessage.trimmingCharacters(in: .whitespacesAndNewlines))
+            return
+        }
 
-                let formattedStartDate = formatDate(date: startDate.date)
-                let formattedEndDate = formatDate(date: endDate.date)
+        let formattedStartDate = formatDate(date: startDate.date)
+        let formattedEndDate = formatDate(date: endDate.date)
 
-                if let _ = coreDataHelper.createTrip(tripName: TripName.text!, startLocation: startLocation.text!, endLocation: endLocation.text!, startDate: formattedStartDate, endDate: formattedEndDate, todoItems: todoItems) {
-                    showAlert(message: "Trip saved successfully!")
-                } else {
-                    showAlert(message: "Failed to save the trip.")
-                }
-
+        if let _ = coreDataHelper.createTrip(tripName: TripName.text!, startLocation: startLocation.text!, endLocation: endLocation.text!, startDate: formattedStartDate, endDate: formattedEndDate, todoItems: todoItems) {
+            showAlertSuccess(message: "Trip saved successfully!")
+        } else {
+            showAlertSuccess(message: "Failed to save the trip.")
+        }
     }
 
     @IBAction func OnAddTodo(_ sender: Any) {

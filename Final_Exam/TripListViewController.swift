@@ -63,11 +63,11 @@ class TripListViewController: UIViewController, UITableViewDataSource, UITableVi
             let alert = UIAlertController(title: "Delete Trip", message: "Are you sure you want to delete the trip '\(trip.tripName ?? "")'?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
-                // Delete the trip from Core Data
+            
                 let coreDataHelper = CoreDataHelper()
                 coreDataHelper.deleteTrip(trip: trip)
                 
-                // Remove from the original trips array
+                
                 if let index = self.trips.firstIndex(of: trip) {
                     self.trips.remove(at: index)
                 }
@@ -87,7 +87,6 @@ class TripListViewController: UIViewController, UITableViewDataSource, UITableVi
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if filteredTrips.isEmpty {
-            // Navigate to AddTripViewController if no trips are available
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             if let addTripVC = storyboard.instantiateViewController(withIdentifier: "AddTripViewController") as? AddTripViewController {
                 navigationController?.pushViewController(addTripVC, animated: true)

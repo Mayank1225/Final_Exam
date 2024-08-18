@@ -31,7 +31,6 @@ class TripDetailViewController: UIViewController {
         
         
         mapView.delegate = self
-//        locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         

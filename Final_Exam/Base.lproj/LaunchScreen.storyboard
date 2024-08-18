@@ -29,6 +29,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="b5S-Se-QPu">
+                                <rect key="frame" x="121" y="584" width="151" height="4"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -36,8 +39,11 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ZKB-9h-ttt" secondAttribute="trailing" constant="20" id="GRo-fJ-FNi"/>
                             <constraint firstItem="tfM-sm-Eoe" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Hbq-jX-aOm"/>
                             <constraint firstItem="ZKB-9h-ttt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="J4j-V7-8d7"/>
+                            <constraint firstItem="b5S-Se-QPu" firstAttribute="top" secondItem="tfM-sm-Eoe" secondAttribute="bottom" constant="8" symbolic="YES" id="Nfh-Ai-ati"/>
                             <constraint firstItem="tfM-sm-Eoe" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="WEr-L0-Vya"/>
                             <constraint firstItem="ZKB-9h-ttt" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="150" id="WpP-ab-vi3"/>
+                            <constraint firstItem="b5S-Se-QPu" firstAttribute="centerX" secondItem="tfM-sm-Eoe" secondAttribute="centerX" id="afM-Xd-0Cy"/>
+                            <constraint firstItem="b5S-Se-QPu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="121" id="iKu-9i-FZ6"/>
                         </constraints>
                     </view>
                 </viewController>
