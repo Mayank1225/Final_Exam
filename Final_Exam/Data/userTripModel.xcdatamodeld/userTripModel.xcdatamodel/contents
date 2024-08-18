@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23G93" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="UserTrip" representedClassName=".UserTrip" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <attribute name="endDate" optional="YES" attributeType="String"/>
+        <attribute name="endLocation" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="String"/>
+        <attribute name="startLocation" optional="YES" attributeType="String"/>
+        <attribute name="todoItem" optional="YES" attributeType="Transformable"/>
+        <attribute name="tripName" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="UserTripExpense" representedClassName=".UserTripExpense" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <attribute name="expenseAmount" optional="YES" attributeType="String"/>
+        <attribute name="expenseName" optional="YES" attributeType="String"/>
+        <attribute name="tripName" optional="YES" attributeType="String"/>
+    </entity>
+</model>

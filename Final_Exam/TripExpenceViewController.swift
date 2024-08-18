@@ -1,4 +1,5 @@
 import UIKit
+import CoreData
 
 class TripExpenceViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -7,26 +8,33 @@ class TripExpenceViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var ExpenseAmount: UITextField!
     @IBOutlet weak var saveBtn: UIButton!
     @IBOutlet weak var ResetBtn: UIButton!
-    
     @IBOutlet weak var TotalExpense: UILabel!
     @IBOutlet weak var tripExpenseTable: UITableView!
     
-    var trip: Trip?
-    
+    var trip: UserTrip?
+    var expenses: [UserTripExpense] = []
+    private let coreDataHelper = CoreDataHelper()
+    private var selectedExpense: UserTripExpense?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         TripName.text = trip?.tripName
         tripExpenseTable.dataSource = self
         tripExpenseTable.delegate = self
-        
-        // Calculate and display the total expense when the view loads
+
+        loadExpenses()
         updateTotalExpense()
     }
     
+    private func loadExpenses() {
+        guard let tripName = trip?.tripName else { return }
+        expenses = coreDataHelper.fetchExpenses(forTrip: tripName)
+        tripExpenseTable.reloadData()
+    }
+
     @IBAction func OnReset(_ sender: Any) {
-        ExpenseName.text = ""
-        ExpenseAmount.text = ""
+        resetFields()
     }
     
     @IBAction func OnSave(_ sender: Any) {
@@ -35,34 +43,30 @@ class TripExpenceViewController: UIViewController, UITableViewDataSource, UITabl
             return
         }
         
-        // Check if the amount field is empty
         guard let expenseAmountText = ExpenseAmount.text, !expenseAmountText.isEmpty else {
             showAlert(title: "Input Error", message: "Amount cannot be empty.")
             return
         }
         
-        // Check if the amount is a valid number
         guard let expenseAmount = Double(expenseAmountText) else {
             showAlert(title: "Invalid Amount", message: "Please enter a valid amount.")
             return
         }
         
-        // Proceed with saving the expense if validation is successful
-        let newExpense = Expense(name: expenseName, amount: expenseAmount)
-        trip?.expenses.insert(newExpense, at: 0)
-        tripExpenseTable.reloadData()
-        
-        // Update the total expense after adding a new expense
-        updateTotalExpense()
-
-        // Clear the input fields after saving
-        ExpenseName.text = ""
-        ExpenseAmount.text = ""
-        
-        // Update the trip in the trips array
-        if let index = trips.firstIndex(where: { $0.tripName == trip?.tripName && $0.startLocation == trip?.startLocation && $0.endLocation == trip?.endLocation }) {
-            trips[index] = trip!
+        guard let tripName = trip?.tripName else {
+            showAlert(title: "Error", message: "Trip name is missing.")
+            return
         }
+        
+        if let selectedExpense = selectedExpense {
+            coreDataHelper.updateExpense(expense: selectedExpense, newExpenseName: expenseName, newAmount: String(expenseAmount))
+        } else {
+            coreDataHelper.createExpense(forTrip: tripName, expenseName: expenseName, amount: String(expenseAmount))
+        }
+        
+        loadExpenses()
+        updateTotalExpense()
+        resetFields()
     }
     
     func showAlert(title: String, message: String) {
@@ -71,13 +75,28 @@ class TripExpenceViewController: UIViewController, UITableViewDataSource, UITabl
         present(alert, animated: true, completion: nil)
     }
     
-    func updateTotalExpense() {
-        let total = trip?.expenses.reduce(0) { $0 + $1.amount } ?? 0
-        TotalExpense.text = "Total: $\(total)"
+    private func resetFields() {
+        ExpenseName.text = ""
+        ExpenseAmount.text = ""
+        selectedExpense = nil
     }
     
+    private func updateTotalExpense() {
+        let total = expenses.reduce(0.0) { (result, expense) -> Double in
+            if let amountString = expense.expenseAmount, let amount = Double(amountString) {
+                return result + amount
+            } else {
+                return result
+            }
+        }
+        TotalExpense.text = "Total: $\(total)"
+    }
+
+    
+    // MARK: - UITableViewDataSource
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return trip?.expenses.count ?? 0
+        return expenses.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -85,11 +104,40 @@ class TripExpenceViewController: UIViewController, UITableViewDataSource, UITabl
             return UITableViewCell()
         }
         
-        if let expense = trip?.expenses[indexPath.row] {
-            cell.expenceName.text = expense.name
-            cell.totalExpence.text = "$\(expense.amount)"
+        let expense = expenses[indexPath.row]
+        cell.expenceName.text = expense.expenseName
+        if let amount = expense.expenseAmount {
+            cell.totalExpence.text = "$\(amount)"
+        } else {
+            cell.totalExpence.text = "$0.00"
         }
-        
+
         return cell
+    }
+    
+    // MARK: - UITableViewDelegate
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Populate the text fields with the selected expense details
+        selectedExpense = expenses[indexPath.row]
+        ExpenseName.text = selectedExpense?.expenseName
+        ExpenseAmount.text = selectedExpense?.expenseAmount
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the expense from Core Data
+            let expenseToDelete = expenses[indexPath.row]
+            coreDataHelper.deleteExpense(expense: expenseToDelete)
+            
+            // Remove the expense from the local array
+            expenses.remove(at: indexPath.row)
+            
+            // Update the total expense
+            updateTotalExpense()
+            
+            // Delete the row from the table view
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
     }
 }

@@ -215,7 +215,7 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="4IF-BE-med">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.5" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="4IF-BE-med">
                                 <rect key="frame" x="18" y="210.33333333333334" width="357" height="31"/>
                                 <connections>
                                     <action selector="onSlide:" destination="pyQ-GU-Vq8" eventType="valueChanged" id="m8V-k6-8BC"/>
@@ -486,20 +486,20 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TripListTableViewCell" id="NtL-WK-FCo" customClass="TripListTableViewCell" customModule="Final_Exam" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="53.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="50" width="393" height="53"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NtL-WK-FCo" id="Mrp-gM-w1h">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="53.666667938232422"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="53"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j6r-aO-2S9">
-                                                    <rect key="frame" x="20" y="16" width="42" height="21.666666666666671"/>
+                                                    <rect key="frame" x="20" y="16" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CtC-38-xHQ">
-                                                    <rect key="frame" x="213" y="16" width="160" height="21.666666666666671"/>
+                                                    <rect key="frame" x="213" y="16" width="160" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="160" id="QhK-xk-r0H"/>
                                                     </constraints>
@@ -557,7 +557,7 @@
         <!--Add Trip View Controller-->
         <scene sceneID="Zga-0e-ReV">
             <objects>
-                <viewController id="MLp-HQ-bRj" customClass="AddTripViewController" customModule="Final_Exam" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddTripViewController" id="MLp-HQ-bRj" customClass="AddTripViewController" customModule="Final_Exam" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="a43-B9-rtK">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
